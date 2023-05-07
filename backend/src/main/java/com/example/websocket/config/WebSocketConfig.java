@@ -76,12 +76,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
                 StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
                 log.info("user: {}, command: {} Payload: {}", accessor.getLogin(), accessor.getCommand(), message.getPayload());
-                Long userId = Long.parseLong(Objects.requireNonNull(accessor.getLogin()));
 
                 if (accessor.getCommand() == StompCommand.CONNECT) {
+                    Long userId = Long.parseLong(accessor.getLogin());
                     notificationUserRepository.add(userId);
                 }
                 else if (accessor.getCommand() == StompCommand.DISCONNECT) {
+                    Long userId = Long.parseLong(accessor.getLogin());
                     notificationUserRepository.remove(userId);
                 }
             }
