@@ -1,7 +1,7 @@
 
-const TextInput = ({ placeholder }) => (
+const TextInput = ({ placeholder, name }) => (
   <div className="input-container">
-        <input type="text" placeholder={placeholder} />
+        <input type="text" name={name} placeholder={placeholder} />
   </div>
 );
 
