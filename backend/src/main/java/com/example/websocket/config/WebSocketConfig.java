@@ -75,7 +75,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             @Override
             public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
                 StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-                log.info("user: {}, command: {} Payload: {}", accessor.getLogin(), accessor.getCommand(), message.getPayload());
+                log.info("{ user: {}, command: {} }", accessor.getLogin(), accessor.getCommand());
 
                 if (accessor.getCommand() == StompCommand.CONNECT) {
                     Long userId = Long.parseLong(accessor.getLogin());
