@@ -1,6 +1,7 @@
 package com.example.websocket.config;
 
 import com.example.websocket.repository.NotificationUserRepository;
+import com.example.websocket.utils.TokenValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,7 @@ import java.util.Objects;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final NotificationUserRepository notificationUserRepository;
+    private final TokenValidator tokenValidator;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -44,7 +46,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         MultiValueMap<String, String> queryParams = UriComponentsBuilder.fromUri(request.getURI()).build().getQueryParams();
                         String token = queryParams.getFirst("token");
 
-                        if (token != null) {
+                        if (token != null && tokenValidator.validate(token)) {
                             log.info("TOKEN {}",  token);
                             return true;
                         } else {
